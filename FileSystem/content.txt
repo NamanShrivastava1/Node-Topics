@@ -1,0 +1,2 @@
+Hello, this is content written by Node.js!
+This text is appended to the bottom.
