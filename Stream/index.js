@@ -1,4 +1,4 @@
-const { pipeline } = require("stream");
+const { pipeline, getDefaultHighWaterMark } = require("stream");
 const fs = require("fs");
 const zlib = require("zlib"); // Built-in compression module
 
@@ -23,13 +23,16 @@ const writeStream = fs.createWriteStream("output.txt");
 // );
 
 // -----------------
-const readableStream = fs.createReadStream('input.txt', 'utf8');
-
-readableStream.on('data', (chunk) => {
-  console.log(`--- Received a chunk of ${chunk.length} characters ---`);
-  console.log(chunk); 
+const readableStream = fs.createReadStream("input.txt", {
+  encoding: "utf8",
+  // highWaterMark: 3 * 1024,
 });
 
-readableStream.on('end', () => {
-  console.log('Finished reading file.');
+readableStream.on("data", (chunk) => {
+  console.log(`--- Received a chunk of ${chunk.length} characters ---`);
+  console.log(chunk);
+});
+
+readableStream.on("end", () => {
+  console.log("Finished reading file.");
 });
