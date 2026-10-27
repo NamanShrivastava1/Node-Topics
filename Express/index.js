@@ -8,6 +8,7 @@ app.get("/search", (req, res) => {
   res.send(`Searching for ${term} on page ${page}`);
 });
 
+// ----------
 // Params
 app.get("/:file{.:ext}", (req, res) => {
   console.log(req.params);
@@ -16,6 +17,7 @@ app.get("/:file{.:ext}", (req, res) => {
   res.send("ok");
 });
 
+// ----------
 // Route handlers
 app.get(
   "/example/b",
@@ -28,6 +30,7 @@ app.get(
   },
 );
 
+// ----------
 const cb0 = function (req, res, next) {
   console.log("CB0");
   next();
@@ -44,6 +47,26 @@ const cb2 = function (req, res) {
 
 app.get("/example/c", [cb0, cb1, cb2]);
 
+// ----------
+app.get(
+  "/user/:id",
+  (req, res, next) => {
+    // if the user ID is 0, skip to the next route
+    if (req.params.id === "0") next("route");
+    // otherwise pass the control to the next middleware function in this stack
+    else next();
+  },
+  (req, res) => {
+    // send a regular response
+    res.send("regular");
+  },
+);
+// handler for the /user/:id path, which sends a special response
+app.get("/user/:id", (req, res) => {
+  res.send("special");
+});
+
+// ----------
 // Route Chaining
 app
   .route("/book")
