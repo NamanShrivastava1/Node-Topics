@@ -73,8 +73,8 @@ app.patch("/updateData/:id", (req, res) => {
 app.delete("/delete/:id", (req, res) => {
   const { id } = req.params;
 
-  const user = data.find((u) => u.id === Number(id));
-  
+  const user = data.findIndex((u) => u.id === Number(id));
+
   if (user === -1) {
     return res.status(404).json({ message: "No id matched." });
   }
